@@ -2,6 +2,8 @@ from rauth.service import OAuth1Service, OAuth1Session
 import json
 from pprint import pprint
 import urllib2
+from bs4 import BeautifulSoup
+# from lxml import etree
 
 CONSUMER_KEY = ''
 CONSUMER_SECRET = ''
@@ -13,7 +15,8 @@ def main():
 
 	print 'ENter search key:'
 	q = raw_input()
-	SearchBooks(session,q)
+	results = SearchBooks(session,q)
+	book_id = getBookId(results)
 
 def GetAcessToken ():
 	global CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET
@@ -96,14 +99,22 @@ def GetNewSession():
 
 def SearchBooks(session,searchKey):
 	URL =  'https://www.goodreads.com/search/index.xml'
-	data = {q : searchKey}
-	response = session.get(URL,data)
+	query = URL + '?&q='+urllib2.quote(searchKey)
+	# sample url below
+	#URL = 'https://www.goodreads.com/search/index.xml?q=Ender%27s+Game'
+	response = session.get(query)
 
-	# if(response.status_code!=200):
-	# 	print response
-	# else:
-	# 	print response
-	print response
+	if(response.status_code!=200):
+		print response
+		return "Failed"
+	else:
+		return response.content
+
+def getBookId(books_xml):
+	# tree = etree.parse(books_xml)
+	soup = BeautifulSoup(books_xml,'xml')
+
+	print soup.find('total-results')
 
 if __name__ == '__main__':
 	main()
