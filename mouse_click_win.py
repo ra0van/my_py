@@ -7,12 +7,22 @@ import thread
 import time
 
 def click(x,y):
-	while True:
-		print 'clicking.....'
-		win32api.SetCursorPos((x,y))
-		win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
-		win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
-		#Wait for 170 seconds before next click
-		time.sleep(170);
+	win32api.SetCursorPos((x,y))
+	win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+	win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
 
-click(0,0)
+def getIdleTime():
+    return (win32api.GetTickCount() - win32api.GetLastInputInfo()) / 1000
+
+def idle():
+	while True:
+		idleTime = getIdleTime()
+		if idleTime>=150:
+			click(100,0)
+		if idleTime<30:
+			sleepTime = 150
+		else:
+			sleepTime = max(150-idleTime,10)
+		print 'sleeping for',sleepTime
+		time.sleep(sleepTime)
+idle()
