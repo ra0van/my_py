@@ -4,7 +4,7 @@ import json
 import sendMail
 
 
-key='AIzaSyA--j1mjasUVSo3uExp8sgJjgIbnSiVKwk'
+key='**********************************'
 baseUrl = 'https://maps.googleapis.com/maps/api/directions/json?region=in&'
 
 def constructUrl(origin,destination):
