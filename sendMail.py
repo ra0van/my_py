@@ -2,7 +2,7 @@ import sendgrid
 from sendgrid.helpers.mail import *
 
 def sendEmail(time):
-    sg = sendgrid.SendGridAPIClient(apikey='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')
+    sg = sendgrid.SendGridAPIClient(apikey='**********************************')
     from_email = Email('rajsherror404@gmail.com')
     to_email = Email('kirranreddy@gmail.com')
     subject = 'Travel Time'
